@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Pro 3.0 - Organic Edition</title>
+    <title>Aura Pro 8.0 - Rigorous Palette</title>
     <style>
         :root {
             --bg-color: #111;
             --panel-bg: rgba(30, 30, 30, 0.75);
             --text-color: #fff;
-            --accent-color: #6366f1;
+            --accent-color: #a0c4ff; /* 严谨版使用中性一点的蓝 */
             --border-color: rgba(255, 255, 255, 0.15);
             --input-bg: rgba(255, 255, 255, 0.1);
         }
 
         body.light-mode {
-            --bg-color: #f0f0f0;
-            --panel-bg: rgba(255, 255, 255, 0.85);
+            --bg-color: #f2f4f6;
+            --panel-bg: rgba(255, 255, 255, 0.92);
             --text-color: #333;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --input-bg: rgba(0, 0, 0, 0.05);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --input-bg: rgba(0, 0, 0, 0.04);
         }
 
         body {
@@ -29,7 +29,7 @@
             height: 100vh;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
             transition: background-color 0.3s ease;
         }
@@ -37,17 +37,17 @@
         /* --- Sidebar --- */
         .sidebar {
             width: 340px;
-            padding: 25px;
+            padding: 20px 25px;
             background: var(--panel-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             z-index: 100;
             overflow-y: auto;
-            box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+            box-shadow: 5px 0 20px rgba(0,0,0,0.05);
             flex-shrink: 0;
         }
 
@@ -61,12 +61,14 @@
         }
         
         .badge {
-            background: var(--accent-color);
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
             font-size: 0.6rem;
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
-            color: white;
-            font-weight: normal;
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .section-title {
@@ -75,18 +77,18 @@
             letter-spacing: 1px;
             color: var(--text-color);
             opacity: 0.5;
-            margin-top: 8px;
+            margin-top: 5px;
             margin-bottom: 2px;
             font-weight: 700;
             border-top: 1px solid var(--border-color);
-            padding-top: 15px;
+            padding-top: 12px;
         }
         .section-title:first-of-type { border-top: none; padding-top: 0; }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         label {
@@ -112,7 +114,7 @@
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid var(--panel-bg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         select, button {
@@ -135,14 +137,56 @@
 
         .primary-btn {
             background: var(--accent-color);
-            color: white;
+            color: #fff;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
             border: none;
             font-weight: 600;
         }
         .primary-btn:hover {
-            background: #4f46e5;
+            filter: brightness(1.1);
             transform: translateY(-1px);
         }
+
+        /* Custom Color UI */
+        .color-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        .color-item {
+            position: relative;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .color-item:hover { transform: scale(1.1); border-color: var(--text-color); }
+        .color-item input[type="color"] {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            padding: 0; margin: 0;
+            border: none;
+            cursor: pointer;
+        }
+        .add-color-btn {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 1px dashed var(--text-color);
+            background: transparent;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0.5;
+            padding: 0;
+        }
+        .add-color-btn:hover { opacity: 1; border-style: solid; background: var(--input-bg); }
 
         .toggle-group {
             display: flex;
@@ -173,19 +217,22 @@
         /* --- Canvas Area --- */
         .canvas-area {
             flex: 1;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
             background-color: #222;
             background-image: 
-                linear-gradient(45deg, #333 25%, transparent 25%), 
-                linear-gradient(-45deg, #333 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #333 75%), 
-                linear-gradient(-45deg, transparent 75%, #333 75%);
+                linear-gradient(45deg, #ddd 25%, transparent 25%), 
+                linear-gradient(-45deg, #ddd 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #ddd 75%), 
+                linear-gradient(-45deg, transparent 75%, #ddd 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
             overflow: hidden;
+            padding: 30px; 
+            box-sizing: border-box;
         }
 
         .preview-backdrop {
@@ -198,12 +245,13 @@
         }
 
         canvas {
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            max-width: 85%;
-            max-height: 85%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            box-shadow: 0 20px 80px rgba(0,0,0,0.15);
             z-index: 2;
             transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: default;
         }
         
         .loading-overlay {
@@ -226,98 +274,102 @@
         @media (max-width: 768px) {
             body { flex-direction: column; overflow-y: auto; }
             .sidebar { width: auto; height: auto; max-height: none; padding-bottom: 50px; }
-            canvas { max-width: 90%; margin: 20px 0; }
+            .canvas-area { height: 50vh; padding: 10px; }
         }
     </style>
 </head>
-<body class="dark-mode">
+<body class="light-mode">
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h1>Aura Pro <span class="badge">V3.0 Organic</span></h1>
+        <h1>Aura Pro <span class="badge">V8.0 Rigorous</span></h1>
         
         <div class="control-group">
             <label>模式 (Mode)</label>
             <div class="toggle-group" id="themeToggle">
-                <div class="toggle-btn active" onclick="setTheme('dark')">⚫ 深色</div>
-                <div class="toggle-btn" onclick="setTheme('light')">⚪ 浅色</div>
+                <div class="toggle-btn" onclick="setTheme('dark')">⚫ 深色</div>
+                <div class="toggle-btn active" onclick="setTheme('light')">⚪ 浅色</div>
                 <div class="toggle-btn" onclick="setTheme('transparent')">🏁 透明</div>
             </div>
         </div>
 
-        <div class="section-title">色彩控制 (Color)</div>
-
+        <div class="section-title">严谨色系 (Professional Palettes)</div>
         <div class="control-group">
-            <label>色系 (Palette)</label>
-            <select id="colorPalette" onchange="generateArt()">
-                <option value="random">🎲 随机 (Random)</option>
-                <option value="warm">🔥 暖色调 (Warm)</option>
-                <option value="cool">🌊 冷色调 (Cool)</option>
-                <option value="neon">⚡️ 赛博霓虹 (Neon)</option>
-                <option value="pastel">🍬 糖果马卡龙 (Pastel)</option>
-                <option value="sunset">🌅 落日余晖 (Sunset)</option>
-                <option value="mono">🌪️ 单色极简 (Mono)</option>
+            <select id="colorMode" onchange="toggleColorMode()">
+                <option value="preset">🎨 智能色系 (System)</option>
+                <option value="custom">🛠 自定义颜色 (Custom)</option>
             </select>
         </div>
-        
+
+        <div class="control-group" id="presetControls">
+            <label>色彩象限</label>
+            <select id="colorPalette" onchange="generateArt()">
+                <optgroup label="基础色相 (Basic Hues)">
+                    <option value="warm_sun">🔴 赤陶/暖阳 (Red-Orange-Yellow)</option>
+                    <option value="fresh_nature">🟢 森野/自然 (YellowGreen-Teal)</option>
+                    <option value="cool_ocean">🔵 深海/冰川 (Cyan-Blue)</option>
+                    <option value="ethereal_purple">🟣 幻梦/星云 (Indigo-Violet)</option>
+                    <option value="romantic_pink">🌸 浪漫/粉黛 (Magenta-Pink)</option>
+                </optgroup>
+                <optgroup label="特殊风格 (Special Styles)">
+                    <option value="holographic">🌈 全息/光谱 (Holographic CMY)</option>
+                    <option value="morandi">🌫️ 莫兰迪/高级灰 (Morandi)</option>
+                    <option value="all_mixed">🎨 全色相奶色 (All Creamy)</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="control-group" id="customControls" style="display:none;">
+            <div class="color-list" id="customColorList"></div>
+        </div>
+
         <div class="control-group">
             <label>饱和度 (Saturation) <span id="satVal">100%</span></label>
             <input type="range" id="saturation" min="0" max="2.0" step="0.1" value="1.0">
         </div>
-
         <div class="control-group">
             <label>明度 (Brightness) <span id="briVal">100%</span></label>
             <input type="range" id="brightness" min="0.2" max="2.0" step="0.1" value="1.0">
         </div>
-
-        <div class="section-title">形态与扭曲 (Shape)</div>
-
-        <div class="control-group">
-            <label>
-                不规则程度 (Warp)
-                <span id="warpVal">0.0</span>
-            </label>
-            <!-- 0 = 圆, 1.0 = 极度不规则 -->
-            <input type="range" id="warpAmount" min="0" max="1.5" step="0.05" value="0.0">
-        </div>
         
         <div class="control-group">
-            <label>
-                拉伸/流动 (Flow)
-                <span id="stretchVal">0 (圆)</span>
-            </label>
-            <input type="range" id="stretchAmount" min="-0.95" max="2.0" step="0.05" value="0">
+            <label>透明度 (Opacity) <span id="opVal">100%</span></label>
+            <input type="range" id="opacity" min="0.1" max="1.0" step="0.05" value="1.0">
         </div>
 
+        <div class="section-title">形态 (Shape)</div>
+        <div class="control-group">
+            <label>不规则扭曲 (Warp) <span id="warpVal">0.3</span></label>
+            <input type="range" id="warpAmount" min="0" max="1.5" step="0.05" value="0.3">
+        </div>
+        <div class="control-group">
+            <label>流动方向 (Flow) <span id="stretchVal">0</span></label>
+            <input type="range" id="stretchAmount" min="-0.95" max="2.0" step="0.05" value="0">
+        </div>
         <div class="control-group">
             <label>旋转角度 (Angle) <span id="angleVal">0°</span></label>
             <input type="range" id="blurAngle" min="0" max="180" step="1" value="0">
         </div>
 
         <div class="section-title">质感 (Texture)</div>
-
         <div class="control-group">
-            <label>颜色数量 <span id="countVal">6</span></label>
-            <input type="range" id="colorCount" min="2" max="12" value="6">
+            <label>光斑数量 <span id="countVal">5</span></label>
+            <input type="range" id="colorCount" min="2" max="12" value="5">
         </div>
-
         <div class="control-group">
-            <label>弥散模糊 (Blur) <span id="blurVal">120</span></label>
-            <input type="range" id="blurStrength" min="20" max="300" value="120">
+            <label>弥散模糊 <span id="blurVal">140</span></label>
+            <input type="range" id="blurStrength" min="20" max="300" value="140">
         </div>
-
         <div class="control-group">
-            <label>光斑大小 (Size) <span id="sizeVal">1.5</span></label>
-            <input type="range" id="blobSize" min="0.5" max="3.0" step="0.1" value="1.5">
+            <label>光斑大小 <span id="sizeVal">1.6</span></label>
+            <input type="range" id="blobSize" min="0.5" max="3.0" step="0.1" value="1.6">
         </div>
-
         <div class="control-group">
-            <label>噪点颗粒 (Grain) <span id="noiseVal">10%</span></label>
+            <label>噪点颗粒 <span id="noiseVal">10%</span></label>
             <input type="range" id="noiseAmount" min="0" max="50" value="10">
         </div>
 
         <div class="section-title">输出 (Export)</div>
-
         <div class="control-group">
             <select id="aspectRatio">
                 <option value="desktop">🖥 桌面 (16:9) - 1080p</option>
@@ -334,7 +386,6 @@
         </div>
     </div>
 
-    <!-- Canvas -->
     <div class="canvas-area">
         <div class="preview-backdrop"></div>
         <div id="loadingMsg" class="loading-overlay">生成中...</div>
@@ -349,61 +400,54 @@
         const loadingMsg = document.getElementById('loadingMsg');
         const backdrop = document.querySelector('.preview-backdrop');
         
-        // 配置
         const config = {
-            width: 1920,
-            height: 1080,
-            count: 6,
-            blur: 120,
-            sizeScale: 1.5,
-            noise: 10,
-            palette: 'random',
-            theme: 'dark',
-            stretch: 0, 
-            angle: 0,
-            saturation: 1.0,
-            brightness: 1.0, // 新增
-            warp: 0.0        // 新增：不规则程度
+            width: 1920, height: 1080,
+            count: 5, blur: 140, sizeScale: 1.6, noise: 10,
+            mode: 'preset', 
+            palette: 'all_mixed', // 默认全系
+            customColors: ['#a18cd1', '#fbc2eb', '#fad0c4'], 
+            theme: 'light', 
+            stretch: 0, angle: 0,
+            saturation: 1.0, brightness: 1.0, 
+            opacity: 1.0, 
+            warp: 0.3
         };
 
         let blobs = [];
+        let baseHue = 0;
 
-        // UI 绑定
-        const bindInput = (id, key, suffix = '', needsRegen = false) => {
-            const el = document.getElementById(id);
-            el.addEventListener('input', (e) => {
-                const val = parseFloat(e.target.value);
-                config[key] = val;
-                
-                const labelSpan = e.target.parentElement.querySelector('span:first-child');
-                
-                // 特殊文本格式化
-                if(id === 'saturation' || id === 'brightness') {
-                    labelSpan.innerText = Math.round(val * 100) + '%';
-                } else if(id === 'stretchAmount') {
-                    const txt = val === 0 ? '0 (圆)' : (val > 0 ? `+${val} (横)` : `${val} (竖)`);
-                    document.getElementById('stretchVal').innerText = txt;
-                } else if (labelSpan) {
-                    labelSpan.innerText = val + suffix;
-                }
+        // --- 拖拽功能 ---
+        let isDragging = false;
+        let dragIndex = -1;
+        let dragOffset = { x: 0, y: 0 };
 
-                if (needsRegen) generateArt(); 
-                else drawBlobs(); 
+        function initUI() {
+            renderCustomColors();
+            bindInput('colorCount', 'count', '', true);
+            bindInput('blurStrength', 'blur', '');
+            bindInput('blobSize', 'sizeScale', '');
+            bindInput('noiseAmount', 'noise', '%');
+            bindInput('stretchAmount', 'stretch', ''); 
+            bindInput('blurAngle', 'angle', '°'); 
+            bindInput('saturation', 'saturation', '');
+            bindInput('brightness', 'brightness', ''); 
+            bindInput('opacity', 'opacity', ''); 
+            bindInput('warpAmount', 'warp', '');
+            
+            document.getElementById('aspectRatio').addEventListener('change', () => {
+                updateSize();
             });
-        };
+            
+            setTheme('light'); 
+            
+            // 修复初始化白屏 Bug：延迟一帧执行，确保 DOM 准备好
+            setTimeout(() => {
+                updateSize();
+            }, 10);
+        }
 
-        bindInput('colorCount', 'count', '', true);
-        bindInput('blurStrength', 'blur', '');
-        bindInput('blobSize', 'sizeScale', '');
-        bindInput('noiseAmount', 'noise', '%');
-        bindInput('stretchAmount', 'stretch', ''); 
-        bindInput('blurAngle', 'angle', '°'); 
-        bindInput('saturation', 'saturation', '');
-        bindInput('brightness', 'brightness', ''); // 实时明度
-        bindInput('warpAmount', 'warp', '');       // 实时扭曲
-
-        document.getElementById('aspectRatio').addEventListener('change', (e) => {
-            const mode = e.target.value;
+        function updateSize() {
+            const mode = document.getElementById('aspectRatio').value;
             let w = 1920, h = 1080;
             switch(mode) {
                 case '4k': w = 3840; h = 2160; break;
@@ -414,178 +458,343 @@
             }
             config.width = w; config.height = h;
             canvas.width = w; canvas.height = h;
-            generateArt();
+            generateArt(); 
+        }
+
+        // --- 拖拽逻辑 ---
+        function getCanvasCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            const mouse = getCanvasCoordinates(e);
+            for (let i = blobs.length - 1; i >= 0; i--) {
+                const b = blobs[i];
+                const dist = Math.sqrt((mouse.x - b.x)**2 + (mouse.y - b.y)**2);
+                if (dist < (b.r * config.sizeScale * 1.2)) {
+                    isDragging = true;
+                    dragIndex = i;
+                    dragOffset = { x: mouse.x - b.x, y: mouse.y - b.y };
+                    canvas.style.cursor = 'grabbing';
+                    break;
+                }
+            }
         });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const mouse = getCanvasCoordinates(e);
+            if (isDragging && dragIndex !== -1) {
+                blobs[dragIndex].x = mouse.x - dragOffset.x;
+                blobs[dragIndex].y = mouse.y - dragOffset.y;
+                drawBlobs();
+            } else {
+                let isHover = false;
+                for (let i = blobs.length - 1; i >= 0; i--) {
+                    const b = blobs[i];
+                    const dist = Math.sqrt((mouse.x - b.x)**2 + (mouse.y - b.y)**2);
+                    if (dist < (b.r * config.sizeScale * 1.2)) { isHover = true; break; }
+                }
+                canvas.style.cursor = isHover ? 'grab' : 'default';
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isDragging) { isDragging = false; dragIndex = -1; canvas.style.cursor = 'grab'; }
+        });
+
+        // --- 常规逻辑 ---
+        function toggleColorMode() {
+            const mode = document.getElementById('colorMode').value;
+            config.mode = mode;
+            document.getElementById('presetControls').style.display = mode === 'preset' ? 'flex' : 'none';
+            document.getElementById('customControls').style.display = mode === 'custom' ? 'flex' : 'none';
+            generateArt();
+        }
+
+        function renderCustomColors() {
+            const container = document.getElementById('customColorList');
+            container.innerHTML = '';
+            config.customColors.forEach((color, index) => {
+                const div = document.createElement('div');
+                div.className = 'color-item';
+                div.innerHTML = `<input type="color" value="${color}" onchange="updateCustomColor(${index}, this.value)">`;
+                div.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    if(config.customColors.length > 1) {
+                        config.customColors.splice(index, 1);
+                        renderCustomColors();
+                        generateArt();
+                    }
+                };
+                container.appendChild(div);
+            });
+            if (config.customColors.length < 8) {
+                const addBtn = document.createElement('button');
+                addBtn.className = 'add-color-btn';
+                addBtn.innerText = '+';
+                addBtn.onclick = () => {
+                    config.customColors.push('#eeeeee');
+                    renderCustomColors();
+                    generateArt();
+                };
+                container.appendChild(addBtn);
+            }
+        }
+
+        window.updateCustomColor = (index, val) => { config.customColors[index] = val; generateArt(); };
+
+        function hexToHSL(H) {
+            let r = 0, g = 0, b = 0;
+            if (H.length == 4) { r = "0x" + H[1] + H[1]; g = "0x" + H[2] + H[2]; b = "0x" + H[3] + H[3]; } 
+            else if (H.length == 7) { r = "0x" + H[1] + H[2]; g = "0x" + H[3] + H[4]; b = "0x" + H[5] + H[6]; }
+            r /= 255; g /= 255; b /= 255;
+            let cmin = Math.min(r,g,b), cmax = Math.max(r,g,b), delta = cmax - cmin;
+            let h = 0, s = 0, l = 0;
+            if (delta == 0) h = 0;
+            else if (cmax == r) h = ((g - b) / delta) % 6;
+            else if (cmax == g) h = (b - r) / delta + 2;
+            else h = (r - g) / delta + 4;
+            h = Math.round(h * 60);
+            if (h < 0) h += 360;
+            l = (cmax + cmin) / 2;
+            s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+            return { h: h, s: s * 100, l: l * 100 };
+        }
+
+        const bindInput = (id, key, suffix = '', needsRegen = false) => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value);
+                config[key] = val;
+                const labelSpan = e.target.parentElement.querySelector('span:first-child');
+                if(id === 'saturation' || id === 'brightness' || id === 'opacity') labelSpan.innerText = Math.round(val * 100) + '%';
+                else if(id === 'stretchAmount') {
+                    const txt = val === 0 ? '0' : (val > 0 ? `+${val}` : `${val}`);
+                    document.getElementById('stretchVal').innerText = txt;
+                } else if (labelSpan) labelSpan.innerText = val + suffix;
+                if (needsRegen) generateArt(); else drawBlobs(); 
+            });
+        };
 
         function setTheme(mode) {
             config.theme = mode;
             const body = document.body;
-            
             themeToggles.forEach((btn, idx) => {
                 const modes = ['dark', 'light', 'transparent'];
                 btn.classList.toggle('active', modes[idx] === mode);
             });
-
             if (mode === 'light') {
                 body.classList.add('light-mode');
-                document.documentElement.style.setProperty('--bg-color', '#f0f0f0');
+                document.documentElement.style.setProperty('--bg-color', '#f2f4f6'); 
             } else {
                 body.classList.remove('light-mode');
                 document.documentElement.style.setProperty('--bg-color', '#111');
             }
-
-            if (mode === 'transparent') {
-                backdrop.style.opacity = '0';
-            } else {
+            if (mode === 'transparent') backdrop.style.opacity = '0';
+            else {
                 backdrop.style.opacity = '1';
-                backdrop.style.backgroundColor = mode === 'dark' ? '#000000' : '#ffffff';
+                backdrop.style.backgroundColor = mode === 'dark' ? '#000000' : '#f2f4f6';
             }
             drawBlobs();
         }
 
-        function getColorByPalette(palette) {
+        // --- 核心优化：严谨分类 + 奶色算法 ---
+        function getRigorousColor(palette) {
             const rand = (min, max) => Math.random() * (max - min) + min;
             let h, s, l;
+
+            let currentHue = baseHue;
+            currentHue += rand(-30, 30); // 稍微减少随机波动，让色系更稳
+
+            // 通用奶色参数：高明度，中等饱和度
+            const minS = 50, maxS = 85;
+            const minL = 75, maxL = 92;
+
             switch (palette) {
-                case 'warm': h = rand(-30, 60); if(h<0) h+=360; s = rand(70, 95); l = rand(50, 70); break;
-                case 'cool': h = rand(170, 280); s = rand(60, 90); l = rand(45, 75); break;
-                case 'neon': 
-                    const neons = [300, 180, 120, 60, 0]; 
-                    h = neons[Math.floor(Math.random() * neons.length)] + rand(-20,20);
-                    s = rand(90, 100); l = rand(50, 60); break;
-                case 'pastel': h = rand(0, 360); s = rand(40, 70); l = rand(75, 90); break;
-                case 'sunset': h = Math.random()>0.5 ? rand(200,280) : rand(340,30); s=75; l=60; break;
-                case 'mono': 
-                    if (!window.currentMonoHue) window.currentMonoHue = rand(0, 360);
-                    h = window.currentMonoHue + rand(-20, 20); s = rand(50, 90); l = rand(30, 70); break;
-                default: h = rand(0, 360); s = rand(60, 90); l = rand(45, 75); break;
+                // 1. 赤陶/暖阳 (Warmth)
+                // 范围：红(345)-橙-金黄(50)
+                case 'warm_sun': 
+                    if(!window.isHueSet) { 
+                        baseHue = rand(-15, 50); 
+                        if(baseHue < 0) baseHue += 360; 
+                        window.isHueSet = true; 
+                    }
+                    currentHue = baseHue + rand(-20, 20);
+                    s = rand(60, 90); l = rand(minL, maxL); 
+                    break;
+
+                // 2. 森野/自然 (Nature)
+                // 范围：嫩绿(80) - 青绿(160)
+                case 'fresh_nature': 
+                    if(!window.isHueSet) { baseHue = rand(80, 160); window.isHueSet = true; }
+                    currentHue = baseHue + rand(-25, 25);
+                    s = rand(40, 75); l = rand(minL, maxL);
+                    break;
+
+                // 3. 深海/冰川 (Oceanic)
+                // 范围：青(170) - 蓝(240)
+                case 'cool_ocean': 
+                    if(!window.isHueSet) { baseHue = rand(170, 240); window.isHueSet = true; }
+                    currentHue = baseHue + rand(-25, 25);
+                    s = rand(50, 85); l = rand(minL, maxL);
+                    break;
+
+                // 4. 幻梦/星云 (Ethereal)
+                // 范围：深蓝(240) - 紫(310)
+                case 'ethereal_purple': 
+                    if(!window.isHueSet) { baseHue = rand(250, 310); window.isHueSet = true; }
+                    currentHue = baseHue + rand(-20, 20);
+                    s = rand(50, 80); l = rand(minL+5, 95); // 紫色需要更亮一点才通透
+                    break;
+
+                // 5. 浪漫/粉黛 (Romantic)
+                // 范围：品红(320) - 桃红(10)
+                case 'romantic_pink': 
+                    if(!window.isHueSet) { 
+                        baseHue = rand(320, 370); 
+                        if(baseHue > 360) baseHue -= 360;
+                        window.isHueSet = true; 
+                    }
+                    currentHue = baseHue + rand(-20, 20);
+                    s = rand(60, 90); l = rand(80, 95);
+                    break;
+
+                // 6. 全息/光谱 (Holographic)
+                // 特殊：青、品、黄 三原色随机
+                case 'holographic':
+                    const holoHues = [180, 300, 60]; // Cyan, Magenta, Yellow
+                    currentHue = holoHues[Math.floor(Math.random()*holoHues.length)] + rand(-15,15);
+                    s = rand(70, 95); l = rand(80, 95);
+                    break;
+
+                // 7. 莫兰迪 (Morandi)
+                // 全色相，但低饱和、适中明度
+                case 'morandi': 
+                    if(!window.isHueSet) { baseHue = rand(0, 360); window.isHueSet = true; }
+                    currentHue = baseHue + rand(-40, 40);
+                    s = rand(15, 45); l = rand(65, 85); // 灰一点
+                    break;
+
+                // 8. 全系奶色混合
+                default: 
+                    if(!window.isHueSet) { baseHue = rand(0, 360); window.isHueSet = true; }
+                    currentHue = baseHue + rand(-50, 50); 
+                    s = rand(50, 85); l = rand(minL, maxL);
+                    break;
             }
-            return { h, s, l };
+            
+            if (currentHue < 0) currentHue += 360;
+            if (currentHue > 360) currentHue -= 360;
+            
+            return { h: currentHue, s, l };
         }
 
         function generateArt() {
-            if(config.palette === 'mono') window.currentMonoHue = Math.random() * 360;
+            window.isHueSet = false;
+            baseHue = Math.random() * 360; 
+
             blobs = [];
             for (let i = 0; i < config.count; i++) {
-                // 为每个光斑生成一套“形态种子”
-                const shapePoints = [];
-                const numPoints = 8; // 8个控制点，足够平滑
-                for(let j=0; j<numPoints; j++) {
-                    // 预先生成随机偏移量 (-1 到 1)
-                    shapePoints.push(Math.random() * 2 - 1); 
+                let baseColorHSL;
+                if (config.mode === 'custom' && config.customColors.length > 0) {
+                    const hex = config.customColors[Math.floor(Math.random() * config.customColors.length)];
+                    baseColorHSL = hexToHSL(hex);
+                } else {
+                    baseColorHSL = getRigorousColor(config.palette);
+                    window.isHueSet = true; 
                 }
+
+                const shapePoints = [];
+                for(let j=0; j<8; j++) shapePoints.push(Math.random() * 2 - 1); 
 
                 blobs.push({
                     x: Math.random() * config.width,
                     y: Math.random() * config.height,
-                    r: (Math.random() * 0.3 + 0.15) * Math.min(config.width, config.height),
-                    colorData: getColorByPalette(config.palette),
+                    // 让圆心位置稍微居中一点
+                    r: (Math.random() * 0.3 + 0.2) * Math.min(config.width, config.height),
+                    colorData: baseColorHSL,
                     rotation: Math.random() * Math.PI * 2,
-                    shapePoints: shapePoints // 存储形状数据
+                    shapePoints: shapePoints
                 });
             }
             drawBlobs();
         }
 
-        // 绘制单个有机形态 (Organic Shape)
-        function drawOrganicBlob(ctx, blob, radius) {
+        function drawOrganicBlob(ctx, blob, radius, colorString) {
             const points = blob.shapePoints;
             const numPoints = points.length;
             const angleStep = (Math.PI * 2) / numPoints;
-            
+            ctx.save();
             ctx.beginPath();
-            
-            // 计算所有顶点坐标
-            // 基础半径 + (随机因子 * 用户设定的扭曲程度 * 基础半径)
-            // 这样当 config.warp = 0 时，deviation = 0，就是完美圆形
             const calcPoint = (index) => {
                 const angle = index * angleStep;
-                const deviation = points[index % numPoints] * config.warp * 0.5; // 0.5 是为了避免形状破裂太严重
+                const deviation = points[index % numPoints] * config.warp * 0.5; 
                 const r = radius * (1 + deviation);
-                return {
-                    x: Math.cos(angle) * r,
-                    y: Math.sin(angle) * r
-                };
+                return { x: Math.cos(angle) * r, y: Math.sin(angle) * r };
             };
-
-            // 使用二次贝塞尔曲线连接中点，实现圆滑闭合
-            const firstP = calcPoint(0);
-            const lastP = calcPoint(numPoints - 1);
-            
-            // 起始点设为最后一个点和第一个点的中点
-            let p0 = lastP;
-            let p1 = firstP;
-            let midX = (p0.x + p1.x) / 2;
-            let midY = (p0.y + p1.y) / 2;
-            
+            let p0 = calcPoint(numPoints - 1);
+            let p1 = calcPoint(0);
+            let midX = (p0.x + p1.x) / 2, midY = (p0.y + p1.y) / 2;
             ctx.moveTo(midX, midY);
-
             for (let i = 0; i < numPoints; i++) {
-                p0 = calcPoint(i);
-                p1 = calcPoint((i + 1) % numPoints);
-                midX = (p0.x + p1.x) / 2;
-                midY = (p0.y + p1.y) / 2;
-                // 控制点是顶点本身，终点是下一段的中点
+                p0 = calcPoint(i); p1 = calcPoint((i + 1) % numPoints);
+                midX = (p0.x + p1.x) / 2; midY = (p0.y + p1.y) / 2;
                 ctx.quadraticCurveTo(p0.x, p0.y, midX, midY);
             }
-            
             ctx.closePath();
+            ctx.fillStyle = colorString;
             ctx.fill();
+            ctx.restore();
         }
 
         function drawBlobs() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 1. 底色
             if (config.theme !== 'transparent') {
                 ctx.globalCompositeOperation = 'source-over';
-                ctx.fillStyle = config.theme === 'dark' ? '#000000' : '#ffffff';
+                // 浅色模式背景稍微亮一点
+                ctx.fillStyle = config.theme === 'dark' ? '#0a0a0a' : '#f2f4f6';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            // 2. 混合模式
             if (config.theme === 'transparent') {
                 ctx.globalCompositeOperation = 'source-over';
             } else {
-                ctx.globalCompositeOperation = config.theme === 'dark' ? 'screen' : 'multiply';
-                if (config.palette === 'pastel' && config.theme === 'light') ctx.globalCompositeOperation = 'darken';
+                if (config.theme === 'light') {
+                    ctx.globalCompositeOperation = 'source-over'; 
+                } else {
+                    ctx.globalCompositeOperation = 'screen';
+                }
             }
 
-            // 3. 模糊
             const blurScale = config.width / 1920; 
             ctx.filter = `blur(${config.blur * blurScale}px)`;
 
-            // 4. 拉伸计算
             let scaleX = 1, scaleY = 1;
-            if (config.stretch >= 0) {
-                scaleX = 1 + config.stretch * 3; 
-                scaleY = 1 - config.stretch * 0.4;
-            } else {
-                scaleY = 1 + Math.abs(config.stretch) * 3;
-                scaleX = 1 - Math.abs(config.stretch) * 0.4;
-            }
+            if (config.stretch >= 0) { scaleX = 1 + config.stretch * 3; scaleY = 1 - config.stretch * 0.4; } 
+            else { scaleY = 1 + Math.abs(config.stretch) * 3; scaleX = 1 - Math.abs(config.stretch) * 0.4; }
 
-            // 5. 绘制光斑
             blobs.forEach(blob => {
                 ctx.save();
                 ctx.translate(blob.x, blob.y);
                 ctx.rotate(config.angle * Math.PI / 180);
                 ctx.scale(scaleX, scaleY);
                 
-                // --- 颜色处理 (饱和度 + 明度) ---
                 const s = Math.min(100, Math.max(0, blob.colorData.s * config.saturation));
-                // 明度算法：基准L * 亮度系数，限制在 0-100%
                 const l = Math.min(100, Math.max(0, blob.colorData.l * config.brightness));
                 
-                ctx.fillStyle = `hsl(${blob.colorData.h}, ${s}%, ${l}%)`;
+                let finalOpacity = config.opacity;
+                if(config.theme === 'light' && finalOpacity > 0.8) finalOpacity = 0.8; 
+
+                const colorString = `hsla(${blob.colorData.h}, ${s}%, ${l}%, ${finalOpacity})`;
                 
-                // 调用有机形状绘制函数
-                drawOrganicBlob(ctx, blob, blob.r * config.sizeScale);
-                
+                drawOrganicBlob(ctx, blob, blob.r * config.sizeScale, colorString);
                 ctx.restore();
             });
 
-            // 6. 噪点
             if (config.noise > 0) {
                 ctx.filter = 'none';
                 ctx.globalCompositeOperation = config.theme === 'transparent' ? 'source-over' : 'overlay';
@@ -600,17 +809,12 @@
             const nCtx = noiseCanvas.getContext('2d');
             const idata = nCtx.createImageData(noiseSize, noiseSize);
             const buffer32 = new Uint32Array(idata.data.buffer);
-            
             const strength = config.theme === 'transparent' ? config.noise * 1.5 : config.noise * 2.5;
             const alpha = Math.min(255, Math.floor(strength)); 
-
             for (let i = 0; i < buffer32.length; i++) {
-                if (Math.random() < 0.5) {
-                    buffer32[i] = (alpha << 24) | (128 << 16) | (128 << 8) | 128; 
-                }
+                if (Math.random() < 0.5) buffer32[i] = (alpha << 24) | (128 << 16) | (128 << 8) | 128; 
             }
             nCtx.putImageData(idata, 0, 0);
-
             const pattern = ctx.createPattern(noiseCanvas, 'repeat');
             ctx.fillStyle = pattern;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -618,25 +822,21 @@
 
         function downloadImage() {
             const originalText = downloadBtn.innerText;
-            downloadBtn.innerText = "⏳ 渲染处理中...";
+            downloadBtn.innerText = "⏳ 渲染中...";
             downloadBtn.disabled = true;
             loadingMsg.classList.add('show');
-
             setTimeout(() => {
                 canvas.toBlob((blob) => {
                     if (!blob) return;
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     const timestamp = new Date().toISOString().slice(0,19).replace(/[:T]/g, '-');
-                    const themeTag = config.theme;
-                    
-                    link.download = `aura-${config.palette}-${themeTag}-${timestamp}.png`;
+                    link.download = `aura-${config.mode}-${timestamp}.png`;
                     link.href = url;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
                     setTimeout(() => URL.revokeObjectURL(url), 1000);
-                    
                     downloadBtn.innerText = originalText;
                     downloadBtn.disabled = false;
                     loadingMsg.classList.remove('show');
@@ -644,10 +844,7 @@
             }, 100);
         }
 
-        // 初始化
-        canvas.width = 1920; canvas.height = 1080;
-        setTheme('dark');
-        generateArt();
+        initUI();
 
     </script>
 </body>
